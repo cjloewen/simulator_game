@@ -28,7 +28,7 @@ class Map:
         self.regionSize: int = z
 
     def importMap(self):
-        val = input("Enter map path: ")
+        path = input("Enter map path: ")
         # path = ..\\maps\\test.txt
 
         with open(path, "r") as file:

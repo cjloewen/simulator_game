@@ -11,7 +11,7 @@ from model.game import Game
 
 class Controller:
     def __init__(self) -> None:
-        game: Game = Game()
+        self.game: Game = Game()
 
     @classmethod
     def load_game(cls, game: Game):

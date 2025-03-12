@@ -1,4 +1,5 @@
 from typing import List
+import math
 
 """
 Class: Map
@@ -7,8 +8,23 @@ More info later
 
 
 class Tile:
+    impassable: List[str] = ["river", "mountain"]
     def __init__(self, terr: str = "grassy"):
         self.terrain: str = terr
+
+    def isPassable(self):
+        return self.terrain not in Tile.impassable
+    
+    def __str__(self):
+        terr = self.terrain
+        if terr == "grassy":
+            return " "
+        elif terr == "river":
+            return "~"
+        elif terr == "mountain":
+            return "^"
+        else:
+            return terr[0]
 
 
 class Region:
@@ -27,14 +43,30 @@ class Map:
         self.cols: int = y
         self.regionSize: int = z
 
+    def convertToIndices(self, x: float, y: float):
+        globalX = math.floor(x + .5)
+        globalY: int = math.floor( y + .5)
+        blockSize = self.regionSize
+        block_x = math.floor(globalX / blockSize)
+        block_y = math.floor(globalY / blockSize)
+        tile_x = globalX % blockSize
+        tile_y = globalY % blockSize
+
+        return (block_x, block_y, tile_x, tile_y)
+    
+    def isPassable(self, globalX: float, globalY: float):
+        x, y, t_x, t_y = self.convertToIndices(globalX, globalY)
+        region = self.grid[x][y]
+        return region.grid[t_x][t_y].isPassable()
+
     def importMap(self):
         path = input("Enter map path: ")
         # path = ..\\maps\\test.txt
 
         with open(path, "r") as file:
-            self.rows = file.readline()
-            self.cols = file.readline()
-            self.regionSize = file.readline()        
+            self.rows = int(file.readline())
+            self.cols = int(file.readline())
+            self.regionSize = int(file.readline())       
             lines = file.readlines()
 
             for line in lines:

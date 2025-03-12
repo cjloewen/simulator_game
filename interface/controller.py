@@ -12,6 +12,7 @@ from model.game import Game
 class Controller:
     def __init__(self) -> None:
         self.game: Game = Game()
+        self.map: Map = self.game.map
 
     @classmethod
     def load_game(cls, game: Game):
@@ -24,17 +25,14 @@ class Controller:
     '''
     Map functions
     '''
-    def getRegion(self, x: int, y: int):
+    def getRegion(self, x: float, y: float):
         return Region()
 
-    def getTile(self, x: int, y: int) -> Tile:
+    def getTile(self, x: float, y: float) -> Tile:
         return Tile()
 
     def isAvailable(self, x: float, y: float):
-        globalX = math.floor(x + .5)
-        globalY: int = math.floor( y + .5)
-        tile = self.getTile(globalX, globalY)
-        return True
+        return self.map.isPassable(x, y)
 
     '''
     Character functions

@@ -1,6 +1,7 @@
 import multiprocessing
 import time
 import keyboard
+from interface.controller import Controller
 # need this to basically put keystrokes on a stack that is taken care of every refresh, also, need it to "clean the stack every so often"
 # either that or find different functions, as me hitting a once caused it to print out many more times.
 def listen_for_keystrokes():
@@ -16,13 +17,14 @@ def listen_for_keystrokes():
             break
 
 # Function for the main loop
-def ticker(refresh_rate: float):
+def ticker(refresh_rate: float, control: Controller):
     while True:
         print("No")
         time.sleep(refresh_rate)  # Control the loop's refresh rate
         
 
 def main():
+    control: Controller = Controller()
     # Define the refresh rate (in seconds)
     refresh_rate = 1
 

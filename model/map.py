@@ -25,12 +25,23 @@ class Tile:
             return "^"
         else:
             return terr[0]
+    
+    @classmethod
+    def convertChar(cls, terr: str):
+        if terr == " ":
+            return Tile("grassy")
+        elif terr == "~":
+            return Tile("river")
+        elif terr == "^":
+            return Tile("mountain")
+        else:
+            return Tile()
 
 
 class Region:
-    def __init__(self):
-        self.rows: int = 100
-        self.cols: int = 100
+    def __init__(self, x: int):
+        self.rows: int = x
+        self.cols: int = x
         self.grid: List[List[Tile]] = []
         for _ in range(self.rows):
             self.grid.append([])
@@ -42,6 +53,8 @@ class Map:
         self.rows: int = x
         self.cols: int = y
         self.regionSize: int = z
+
+        self.importMap()
 
     def convertToIndices(self, x: float, y: float):
         globalX = math.floor(x + .5)
@@ -68,12 +81,20 @@ class Map:
             self.cols = int(file.readline())
             self.regionSize = int(file.readline())       
             lines = file.readlines()
-
+            counter = 0
+            curRegion = Region(self.regionSize)
+            tempList = [curRegion]
             for line in lines:
                 for char in line:
-                    print(char, end = " ")
-                print()
-        return
+                    curTile: Tile = Tile.convertChar(char)
+                    curRegion.grid[counter].append(curTile)
+                counter += 1
+                if counter == self.regionSize:
+                    curRegion = Region(self.regionSize)
+                    tempList.append(curRegion)
+                    counter = 0
+
+
 
 
 

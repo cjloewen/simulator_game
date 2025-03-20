@@ -1,5 +1,6 @@
 from typing import List
 import math
+from biomes import impassable
 
 """
 Class: Map
@@ -9,16 +10,15 @@ Grid XY is actually rows columns, not cartesian (x,y), eventually can resolve th
 
 
 class Tile:
-    impassable: List[str] = ["river", "mountain"]
-    def __init__(self, terr: str = "grassy"):
+    def __init__(self, terr: str = "grass"):
         self.terrain: str = terr
 
     def isPassable(self):
-        return self.terrain not in Tile.impassable
+        return self.terrain not in impassable
     
     def __str__(self):
         terr = self.terrain
-        if terr == "grassy":
+        if terr == "grass":
             return " "
         elif terr == "river":
             return "~"
@@ -30,14 +30,13 @@ class Tile:
     @classmethod
     def convertChar(cls, terr: str):
         if terr == " ":
-            return Tile("grassy")
+            return Tile("grass")
         elif terr == "~":
             return Tile("river")
         elif terr == "^":
             return Tile("mountain")
         else:
             return Tile()
-
 
 class Region:
     def __init__(self, x: int):
@@ -51,13 +50,13 @@ class Region:
         return self.grid[y][x]
 
 class Map:
-    def __init__(self, x: int = 1, y: int = 1, z: int = 1):
+    def __init__(self, x: int = 1, y: int = 1, regionSize: int = 1):
         self.grid: List[List[Region]] = []
         self.rows: int = x
         self.cols: int = y
-        self.regionSize: int = z
+        self.regionSize: int = regionSize
 
-        self.importMap()
+        #self.importMap()
 
     def getTile(self, x: float, y: float):
         x1,x2,y1,y2 = self.convertToIndices(x, y)
@@ -110,12 +109,3 @@ class Map:
                     tempList.append(curRegion)
                     counter = 0
 
-
-
-
-
-def main():
-    Map().importMap()
-
-if __name__ == "__main__":
-    main()

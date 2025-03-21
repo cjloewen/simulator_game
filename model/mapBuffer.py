@@ -29,7 +29,9 @@ class Buffer:
     def regenerateBuffer(self):
         self.unit.regenerateBuffer(self.centerX, self.centerY)
         self.map.regenerateBuffer(self.centerX, self.centerY)
-        
+
+    def tick(self, rate: float = 1):
+        self.unit.tick(rate)
     '''
     Units are scarce, so they are accessed and then their x,y is gotten
     Tiles are are dense, so they are accessed by x,y
@@ -58,6 +60,10 @@ class UnitBuffer:
             
             if x > minX and x < maxX and y < maxY and y > minY:
                 self.buffer.append(character)
+    
+    def tick(self, rate: float=1):
+        for char in self.characters:
+            char.tick()
 
 
         

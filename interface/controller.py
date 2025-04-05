@@ -1,7 +1,9 @@
 # so the controller will have a game object (can be null)
 from creation_settings import CreationSettings
 from game_settings import GameSettings
+import 
 import math
+from typing import Dict
  
 
 from typing import Any, List
@@ -13,6 +15,7 @@ class Controller:
     def __init__(self) -> None:
         self.game: Game = Game()
         self.map: Map = self.game.map
+        self.buffer
 
     @classmethod
     def load_game(cls, game: Game):
@@ -53,4 +56,5 @@ class Controller:
             return True
         return False
     
+    def moveMainCharacter(self, movementDict: Dict[str, bool], hertz: float = 1):
         

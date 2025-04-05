@@ -40,7 +40,7 @@ class Tile:
 
 
 class Region:
-    def __init__(self, x: int):
+    def __init__(self, x: int = 100):
         self.rows: int = x
         self.cols: int = x
         self.grid: List[List[Tile]] = []
@@ -48,7 +48,15 @@ class Region:
             self.grid.append([])
 
     def getTile(self, x: int, y: int):
+        if self.isOutOfBounds(row=y, col=x):
+            return Tile("unknown")
         return self.grid[y][x]
+    
+    def isOutOfBounds(self, row: int=0, col: int=0):
+        if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+            return True
+        return False
+
 
 class Map:
     def __init__(self, x: int = 1, y: int = 1, z: int = 1):
@@ -61,6 +69,8 @@ class Map:
 
     def getTile(self, x: float, y: float):
         x1,x2,y1,y2 = self.convertToIndices(x, y)
+        if self.isOutOfBounds(row=y1, col=x2):
+            return Tile("unknown")
         return self.grid[y1][x1].getTile(x2, y2)
 
 
@@ -87,6 +97,11 @@ class Map:
         x, y, t_x, t_y = self.convertToIndices(globalX, globalY)
         region = self.grid[x][y]
         return region.grid[t_x][t_y].isPassable()
+    
+    def isOutOfBounds(self, row: int=0, col: int=0):
+        if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+            return True
+        return False
 
     def importMap(self):
         path = input("Enter map path: ")
